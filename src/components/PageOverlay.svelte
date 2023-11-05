@@ -1,7 +1,18 @@
+<script lang="ts" context="module">
+  const browser = !!globalThis.window;
+  let screenWidth = writable(browser ? window.innerWidth : 0);
+
+  browser &&
+    window.addEventListener('resize', () => {
+      screenWidth.set(window.innerWidth);
+    });
+</script>
+
 <script lang="ts">
   import { onMount } from 'svelte';
   import { expandedImage } from '../svelteStores';
   import { mdiClose } from '@mdi/js';
+  import { writable } from 'svelte/store';
 
   function dismiss() {
     $expandedImage = null;
@@ -15,19 +26,31 @@
     }
   }
 
+  $: canExpandImage = $screenWidth && $screenWidth > 900; // TODO: figure out a nicer way to do this
+
+  $: {
+    if (browser) {
+      if (canExpandImage) {
+        document.body.classList.add('page-overlay-can-expand-image');
+      } else {
+        document.body.classList.remove('page-overlay-can-expand-image');
+      }
+    }
+  }
+
   onMount(() => {
     // Add event listeners to all images
     for (const element of document.querySelectorAll('.prose img')) {
       const img = element as HTMLImageElement;
 
       img.addEventListener('click', (e) => {
-        $expandedImage = {
-          src: img.src,
-          alt: img.alt,
-        };
+        if (canExpandImage) {
+          $expandedImage = {
+            src: img.src,
+            alt: img.alt,
+          };
+        }
       });
-
-      img.classList.add('cursor-pointer');
     }
   });
 </script>
@@ -48,3 +71,9 @@
     <img class="max-w-full max-h-full" src={$expandedImage.src} alt={$expandedImage.alt} />
   </div>
 {/if}
+
+<style lang="postcss">
+  :global(.page-overlay-can-expand-image .prose img) {
+    cursor: pointer;
+  }
+</style>
