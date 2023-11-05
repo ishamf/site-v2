@@ -5,7 +5,7 @@ import DynamicTOC from '../../components/DynamicTOC.svelte';
 import { getPosts, type Post } from '@/posts';
 
 export async function getStaticPaths() {
-  const posts = await getPosts();
+  const posts = await getPosts({ draft: true });
   return posts.map((post) => ({
     params: { slug: post.slug },
     props: post,
