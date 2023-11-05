@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { onMount } from 'svelte';
   import { expandedImage } from '../svelteStores';
   import { mdiClose } from '@mdi/js';
 
@@ -13,6 +14,22 @@
       overlay.focus();
     }
   }
+
+  onMount(() => {
+    // Add event listeners to all images
+    for (const element of document.querySelectorAll('.prose img')) {
+      const img = element as HTMLImageElement;
+
+      img.addEventListener('click', (e) => {
+        $expandedImage = {
+          src: img.src,
+          alt: img.alt,
+        };
+      });
+
+      img.classList.add('cursor-pointer');
+    }
+  });
 </script>
 
 {#if $expandedImage}
