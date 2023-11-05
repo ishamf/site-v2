@@ -1,0 +1,64 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import FormattedDate from '../components/FormattedDate.astro';
+import PageOverlay from '../components/PageOverlay.svelte';
+
+type Props = { title: string; description: string };
+
+const { title, description } = Astro.props;
+
+const links = [
+  { url: 'https://github.com/ishamf', label: 'GitHub' },
+  { url: 'https://www.linkedin.com/in/ishamf/', label: 'LinkedIn' },
+];
+---
+
+<html lang="en">
+  <head>
+    <BaseHead title={title} description={description} />
+  </head>
+
+  <body class="bg-neutral-50 dark:bg-slate-900">
+    <div class="min-h-screen flex flex-col isolate">
+      <main class="mt-10 flex-grow">
+        <a href="/"
+          ><h1 class="text-center text-2xl text-slate-800 dark:text-slate-100 font-mono">
+            ishamf.com
+          </h1></a
+        >
+
+        <slot />
+      </main>
+
+      <footer class="self-stretch mt-16 mb-4 px-2 text-slate-800 dark:text-slate-200">
+        <div class="max-w-xl mx-auto flex justify-between">
+          <div>
+            Isham Faizal | {
+              links.map((link, i) => (
+                <>
+                  <a class="text-sky-700 dark:text-sky-300 hover:text-sky-500" href={link.url}>
+                    {link.label}
+                  </a>
+                  {i < links.length - 1 ? ' - ' : ''}
+                </>
+              ))
+            }
+          </div>
+
+          <div>
+            <a class="text-sky-700 dark:text-sky-300 hover:text-sky-500" href="/rss">RSS</a> -
+            <a
+              class="text-sky-700 dark:text-sky-300 hover:text-sky-500"
+              href="https://github.com/ishamf/site">Source Code</a
+            >
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <PageOverlay client:only="svelte" />
+  </body>
+</html>

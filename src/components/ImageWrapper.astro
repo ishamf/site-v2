@@ -1,0 +1,7 @@
+---
+import ExpandableImage from './ExpandableImage.svelte';
+type Props = Parameters<typeof ExpandableImage>[0];
+const props = Astro.props;
+---
+
+<ExpandableImage {...props} client:visible />

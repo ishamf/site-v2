@@ -1,0 +1,52 @@
+---
+import { type CollectionEntry, getCollection } from 'astro:content';
+import PostHeading from '../../components/PostHeading.svelte';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import DynamicTOC from '../../components/DynamicTOC.svelte';
+import ContentRenderer from '../../components/ContentRenderer.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: post,
+  }));
+}
+type Props = CollectionEntry<'blog'>;
+
+const post = Astro.props;
+const { Content, headings } = await post.render();
+const {
+  data: { title, created, description },
+  slug,
+} = post;
+const link = `/p/${slug}`; // TODO:
+---
+
+<BaseLayout title={title} description={description}>
+  <div class="flex flex-row w-screen">
+    <div class="side-item flex flex-row justify-end items-start">
+      <DynamicTOC {headings} client:load />
+    </div>
+    <div class="content overflow-hidden mt-4 bg-white dark:bg-slate-800 mx-auto py-12 max-w-3xl">
+      <div class="max-w-2xl mx-auto px-2">
+        <PostHeading {title} {link} {created} />
+        <div class="prose prose-slate dark:prose-invert font-sans mx-auto mt-4 max-w-none">
+          <ContentRenderer {Content} />
+        </div>
+      </div>
+    </div>
+    <div class="side-item"></div>
+  </div>
+</BaseLayout>
+
+<style lang="postcss">
+	.side-item {
+	  flex: 1 1;
+	  container-type: inline-size;
+	}
+  
+	.content {
+	  flex: 10000 0;
+	}
+</style>
