@@ -1,12 +1,12 @@
 ---
 import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Card from '../components/Card.svelte';
+import Card from '../components/Card.astro';
 import { getPosts } from '@/posts';
 
 const posts = await getPosts();
 ---
 
 <BaseLayout title={SITE_TITLE} description={SITE_DESCRIPTION}>
-  {posts.map((post) => <Card {...post} previewComponent={undefined} />)}
+  {posts.map((post) => <Card {...post} />)}
 </BaseLayout>

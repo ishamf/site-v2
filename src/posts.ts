@@ -11,12 +11,21 @@ const postFrontmatterSchema = z.object({
   created: z.coerce.date(),
 });
 
+async function getPreview(
+  directory: string
+): Promise<MDXInstance<Record<string, unknown>>['Content'] | undefined> {
+  try {
+    return (await import(`./posts/${directory}/+preview.mdx`)).Content;
+  } catch (e) {
+    return undefined;
+  }
+}
+
 /**
  * Get posts based on the files in the posts directory.
  *
  * +page.mdx: the page itself
  * +preview.mdx: preview of the page (optional, will use "description" if not present)
- * +imports.ts: imports for the page, mainly for required web components (optional)
  *
  * The logic to use these files is in src/routes/p/[slug]/*.
  */
@@ -45,6 +54,7 @@ export async function getPosts({ draft = false }: { draft?: boolean } = {}) {
           created: new Date(created),
           directory,
           Content,
+          PreviewContent: await getPreview(directory),
           headings: await getHeadings(),
         };
       }

@@ -31,7 +31,7 @@
 
 <nav class="toc-nav">
   <ul>
-    {#each headings as tocItem, i}
+    {#each headings as tocItem}
       <li
         class="toc-item"
         class:current-item={tocItem.slug === currentItemSlug}
