@@ -35,20 +35,28 @@ in [`oklch`](https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/oklch)
 /* --lighter-color and --lighter-font-color is set by js */
 
 .glowing-text span {
-  animation: waverShadow infinite, waverText infinite;
+  animation:
+    waverShadow infinite,
+    waverText infinite;
 }
 
 @keyframes waverShadow {
   from {
-    text-shadow: 0px 0px 10px currentColor, 0px 0px 10px var(--lighter-color);
+    text-shadow:
+      0px 0px 10px currentColor,
+      0px 0px 10px var(--lighter-color);
   }
 
   50% {
-    text-shadow: 0px 0px 10px currentColor, 0px 0px 20px var(--lighter-color);
+    text-shadow:
+      0px 0px 10px currentColor,
+      0px 0px 20px var(--lighter-color);
   }
 
   to {
-    text-shadow: 0px 0px 10px currentColor, 0px 0px 10px var(--lighter-color);
+    text-shadow:
+      0px 0px 10px currentColor,
+      0px 0px 10px var(--lighter-color);
   }
 }
 
