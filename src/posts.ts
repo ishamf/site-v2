@@ -23,6 +23,7 @@ const postFrontmatterSchema = z.object({
 export async function getPosts({ draft = false }: { draft?: boolean } = {}) {
   const rawPosts = await Promise.all(
     Object.entries(import.meta.glob('./posts/*/+page.mdx', { eager: true })).map(
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       async ([modulePath, moduleExports]: any) => {
         const { Content, frontmatter, getHeadings } = moduleExports as MDXInstance<
           Record<string, unknown>
