@@ -1,5 +1,4 @@
 ---
-import { type CollectionEntry, getCollection } from 'astro:content';
 import PostHeading from '../../components/PostHeading.svelte';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import DynamicTOC from '../../components/DynamicTOC.svelte';
@@ -15,7 +14,7 @@ export async function getStaticPaths() {
 type Props = Post;
 
 const post = Astro.props;
-const { Content, headings, title, created, description, link } = await post;
+const { Content, headings, title, created, description, link } = post;
 ---
 
 <BaseLayout title={title} description={description}>

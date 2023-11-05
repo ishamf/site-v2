@@ -1,5 +1,4 @@
 import type { MDXInstance } from 'astro';
-import type { AstroComponentFactory } from 'astro/runtime/server/index.js';
 import { z } from 'astro:content';
 
 const postFrontmatterSchema = z.object({
@@ -55,7 +54,7 @@ export async function getPosts({ draft = false }: { draft?: boolean } = {}) {
           directory,
           Content,
           PreviewContent: await getPreview(directory),
-          headings: await getHeadings(),
+          headings: getHeadings(),
         };
       }
     )
