@@ -1,0 +1,22 @@
+---
+slug: glowing-text-effects
+title: Glowing Text Effects
+created: 2023-06-18T16:40:00+08:00
+description: >
+  Making text that glow.
+---
+
+import InitialSection from './InitialSection.svelte';
+import { Content as InitialText } from './InitialText.md';
+
+<InitialSection>
+  <InitialText />
+</InitialSection>
+
+import MiddleSection from './MiddleSection.svelte';
+
+<MiddleSection client:load />
+
+import { Content as EndSection } from './EndSection.md';
+
+<EndSection />
