@@ -1,21 +1,12 @@
 ---
-import BaseHead from '../components/BaseHead.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
-import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Card from '../components/Card.svelte';
+import { getPosts } from '@/posts';
 
-const posts = (await getCollection('blog')).sort(
-  (a, b) => a.data.created.valueOf() - b.data.created.valueOf()
-);
+const posts = await getPosts();
 ---
 
 <BaseLayout title={SITE_TITLE} description={SITE_DESCRIPTION}>
-  {
-    posts.map((post) => (
-      <Card {...post.data} previewComponent={undefined} link={`/p/${post.slug}` /*TODO: */} />
-    ))
-  }
+  {posts.map((post) => <Card {...post} previewComponent={undefined} />)}
 </BaseLayout>

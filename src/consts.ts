@@ -3,3 +3,4 @@
 
 export const SITE_TITLE = 'ishamf.com';
 export const SITE_DESCRIPTION = 'Homepage of ishamf.com';
+export const IS_BROWSER = !!globalThis.window;

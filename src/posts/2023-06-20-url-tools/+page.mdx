@@ -1,0 +1,37 @@
+---
+slug: url-tools
+title: URL Contructor Tool
+created: 2023-06-20T21:00:00+08:00
+description: >
+  A tool to generate URLs with complex parameters. It can also be used to generate and open deep links and generate QR codes.
+---
+
+Construct URLs with recursive parameters,
+
+1. Enter a URL.
+2. Add query parameters.
+3. If the parameter value is a valid URL, you'll be able to add params to it.
+4. If you enter a URL that already has some params, you can parse it.
+
+import PageUI from './PageUI.svelte';
+
+<PageUI client:load />
+
+In my work, sometimes I need to construct complicated URLs with multiple parameters,
+and those parameters can be URLs with their own parameters.
+There's not really a lot of tools to support this, so I usually have to do the encoding and formatting manually.
+
+Since it seems easy enough to implement, I decided to create one as a post here. I also added a few helpful features.
+
+### Opening as URL
+
+In mobile, copy-pasting the URL in the browser and clicking a link can have different behavior, depending on which app is registered.
+So I added a link to test this case.
+
+### Generating QR Code
+
+Another common case is to generate QR code for a URL, to easily open it in a mobile device.
+
+### Sharing a URL to this Page
+
+Sometimes you intend for other people to open the URL. In that case, you can share a link to this page.
