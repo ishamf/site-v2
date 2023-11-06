@@ -11,6 +11,8 @@
     "preview": "astro preview",
     "lint": "prettier --check . && eslint .",
     "format": "prettier --write .",
+    "test": "playwright test",
+    "test-ui": "playwright test --ui",
     "astro": "astro"
   },
   "dependencies": {
@@ -32,6 +34,8 @@
     "typescript": "^5.2.2"
   },
   "devDependencies": {
+    "@playwright/test": "^1.39.0",
+    "@types/node": "^20.8.10",
     "@types/qrcode": "^1.5.4",
     "@typescript-eslint/eslint-plugin": "^5.62.0",
     "@typescript-eslint/parser": "^5.62.0",
