@@ -7,7 +7,7 @@
     "dev": "astro dev",
     "start": "astro dev",
     "prepare": "husky install",
-    "build": "astro check && astro build",
+    "build": "astro build",
     "check": "astro check",
     "preview": "astro preview",
     "lint": "prettier --check . && eslint .",
@@ -66,6 +66,9 @@
       "eslint"
     ],
     "*.json": [
+      "prettier --write"
+    ],
+    "*.yml": [
       "prettier --write"
     ],
     "*.astro": [
