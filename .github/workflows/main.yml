@@ -39,6 +39,7 @@ jobs:
   test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
+    container: mcr.microsoft.com/playwright:v1.39.0-jammy
     needs: build
 
     steps:
@@ -57,9 +58,6 @@ jobs:
           node-version: 18.x
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-
-      - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
 
       - name: Run Playwright tests
         run: pnpm test
