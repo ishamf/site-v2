@@ -43,7 +43,7 @@
     for (const element of document.querySelectorAll('.prose img')) {
       const img = element as HTMLImageElement;
 
-      img.addEventListener('click', (e) => {
+      img.addEventListener('click', () => {
         if (canExpandImage) {
           $expandedImage = {
             src: img.src,

@@ -2,8 +2,6 @@
   import CoveredInput from './CoveredInput.svelte';
   import { onMount } from 'svelte';
 
-  export let pageText: string[];
-
   let firstValue = 'This is some text inside a text input';
   let secondValue =
     'This looks identical to the above input, but the text inside is rendered differently.';
@@ -23,7 +21,9 @@
   });
 </script>
 
-{@html pageText[0]}
+<div>
+  <slot name="text-1" />
+</div>
 
 <input class="dark:bg-slate-900 bg-slate-100 p-1" bind:value={firstValue} />
 
@@ -32,16 +32,22 @@
 </p>
 
 {#if !isBrowser}
-  {@html pageText[1]}
+  <div>
+    <slot name="text-2" />
+  </div>
 {/if}
 
-{@html pageText[2]}
+<div>
+  <slot name="text-3" />
+</div>
 
 <CoveredInput bind:value={secondValue} rows={2}>
   {secondValue}
 </CoveredInput>
 
-{@html pageText[3]}
+<div>
+  <slot name="text-4" />
+</div>
 
 <CoveredInput bind:value={thirdValue} rows={3}
   >{#each transformedThirdValue as elem}{#if elem.style === 'normal'}{elem.text}{:else}<span
@@ -49,7 +55,9 @@
       >{/if}{/each}</CoveredInput
 >
 
-{@html pageText[4]}
+<div>
+  <slot name="text-5" />
+</div>
 
 <style>
   input {

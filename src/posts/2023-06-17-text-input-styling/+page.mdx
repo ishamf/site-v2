@@ -7,6 +7,17 @@ description: >
 ---
 
 import Page from './Page.svelte';
-import { text } from './text';
 
-<Page client:load pageText={text} />
+import { Content as Text1 } from './text1.md';
+import { Content as Text2 } from './text2.md';
+import { Content as Text3 } from './text3.md';
+import { Content as Text4 } from './text4.md';
+import { Content as Text5 } from './text5.md';
+
+<Page client:load>
+  <Text1 slot="text-1" />
+  <Text2 slot="text-2" />
+  <Text3 slot="text-3" />
+  <Text4 slot="text-4" />
+  <Text5 slot="text-5" />
+</Page>

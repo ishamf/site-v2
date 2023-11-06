@@ -46,8 +46,6 @@
 </nav>
 
 <style lang="postcss">
-
-
   .toc-nav {
     @apply sticky top-4 mt-32 mx-8;
   }
