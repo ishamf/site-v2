@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
+    "prepare": "husky install",
     "build": "astro check && astro build",
     "check": "astro check",
     "preview": "astro preview",
@@ -44,8 +45,28 @@
     "eslint-config-prettier": "^8.10.0",
     "eslint-plugin-astro": "^0.29.1",
     "eslint-plugin-svelte": "^2.34.1",
+    "husky": "^8.0.3",
+    "lint-staged": "^15.0.2",
     "prettier": "^3.0.3",
     "prettier-plugin-astro": "^0.12.1",
     "prettier-plugin-svelte": "^3.0.3"
+  },
+  "lint-staged": {
+    "*.js": [
+      "prettier --write",
+      "eslint"
+    ],
+    "*.ts": [
+      "prettier --write",
+      "eslint"
+    ],
+    "*.svelte": [
+      "prettier --write",
+      "eslint"
+    ],
+    "*.astro": [
+      "prettier --write",
+      "eslint"
+    ]
   }
 }
