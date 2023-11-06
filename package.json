@@ -64,6 +64,9 @@
       "prettier --write",
       "eslint"
     ],
+    "*.json": [
+      "prettier --write"
+    ],
     "*.astro": [
       "prettier --write",
       "eslint"
