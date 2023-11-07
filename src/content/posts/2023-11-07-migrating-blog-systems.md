@@ -1,8 +1,7 @@
 ---
 title: Migrating Blog Systems
-slug: migrating-blog-systems
+customSlug: migrating-blog-systems
 created: 2023-11-06T02:00:00+08:00
-draft: true
 description: >
   Migrating this blog from SvelteKit to Astro.
 ---

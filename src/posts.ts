@@ -1,12 +1,11 @@
 import type { MDXInstance } from 'astro';
-import { z } from 'astro:content';
+import { getCollection, z } from 'astro:content';
 
-const postFrontmatterSchema = z.object({
+export const postFrontmatterSchema = z.object({
   slug: z.string(),
   title: z.string(),
   description: z.string(),
   draft: z.boolean().optional(),
-  // Transform string to Date object
   created: z.coerce.date(),
 });
 
@@ -29,7 +28,21 @@ async function getPreview(
  * The logic to use these files is in src/routes/p/[slug]/*.
  */
 export async function getPosts({ draft = false }: { draft?: boolean } = {}) {
-  const rawPosts = await Promise.all(
+  const simplePosts = await Promise.all(
+    (await getCollection('posts')).map(async (post) => {
+      const { Content, headings } = await post.render();
+      const { customSlug, ...rest } = post.data;
+      return {
+        ...rest,
+        Content,
+        headings,
+        slug: customSlug,
+        link: `/p/${customSlug}`,
+      };
+    })
+  );
+
+  const advancedPosts = await Promise.all(
     Object.entries(import.meta.glob('./posts/*/+page.mdx', { eager: true })).map(
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       async ([modulePath, moduleExports]: any) => {
@@ -45,13 +58,11 @@ export async function getPosts({ draft = false }: { draft?: boolean } = {}) {
           throw new Error('Invalid path: ' + modulePath);
         }
 
-        const { slug, created } = data;
+        const { slug } = data;
 
         return {
           ...data,
           link: `/p/${slug}`,
-          created: new Date(created),
-          directory,
           Content,
           PreviewContent: await getPreview(directory),
           headings: getHeadings(),
@@ -60,7 +71,15 @@ export async function getPosts({ draft = false }: { draft?: boolean } = {}) {
     )
   );
 
-  return rawPosts
+  const allPosts = [...simplePosts, ...advancedPosts];
+
+  const slugs = new Set(allPosts.map((x) => x.slug));
+
+  if (slugs.size !== allPosts.length) {
+    throw new Error('Duplicate slugs!');
+  }
+
+  return allPosts
     .filter((x) => !x.draft || draft)
     .sort((a, b) => b.created.getTime() - a.created.getTime());
 }
