@@ -19,6 +19,16 @@ async function getPreview(
   }
 }
 
+type AstroComponentFactory = MDXInstance<Record<string, unknown>>['Content'];
+type Headings = ReturnType<MDXInstance<Record<string, unknown>>['getHeadings']>;
+
+export type Post = z.infer<typeof postFrontmatterSchema> & {
+  link: string;
+  Content: AstroComponentFactory;
+  PreviewContent?: AstroComponentFactory;
+  headings: Headings;
+};
+
 /**
  * Get posts based on the files in the posts directory.
  *
@@ -29,7 +39,7 @@ async function getPreview(
  */
 export async function getPosts({
   draft = process.env.NODE_ENV !== 'production',
-}: { draft?: boolean } = {}) {
+}: { draft?: boolean } = {}): Promise<Post[]> {
   const simplePosts = await Promise.all(
     (await getCollection('posts')).map(async (post) => {
       const { Content, headings } = await post.render();
@@ -85,8 +95,6 @@ export async function getPosts({
     .filter((x) => !x.draft || draft)
     .sort((a, b) => b.created.getTime() - a.created.getTime());
 }
-
-export type Post = Awaited<ReturnType<typeof getPosts>>[number];
 
 export async function getPostBySlug(slug: string) {
   const posts = await getPosts({ draft: true });
