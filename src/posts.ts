@@ -27,7 +27,9 @@ async function getPreview(
  *
  * The logic to use these files is in src/routes/p/[slug]/*.
  */
-export async function getPosts({ draft = false }: { draft?: boolean } = {}) {
+export async function getPosts({
+  draft = process.env.NODE_ENV !== 'production',
+}: { draft?: boolean } = {}) {
   const simplePosts = await Promise.all(
     (await getCollection('posts')).map(async (post) => {
       const { Content, headings } = await post.render();
