@@ -8,4 +8,45 @@ draft: true
 ---
 
 Recently, I played [Viewfinder](https://store.steampowered.com/app/1382070/Viewfinder/), which is a puzzle game with a really interesting mechanic.
-You can take photos of the game world, and later "apply" the photo to replace the world behind it. I thought it would be interesting to try to implement it.
+You can take photos of the game world, and later "apply" the photo to replace the world behind it.
+
+I thought it would be interesting to try to implement it. I've also wanted to try [Godot Engine](https://godotengine.org/), so I'll be using that to implement the game.
+
+# Creating the Game World
+
+Before we can start with the camera mechanic, we have to have a game in which to apply them.
+Since Godot already has a physics system designed for 3D games, it's very easy to create one.
+We can just get a bunch of 3D models and import them into Godot as the appropriate entities.
+
+For the scenery, we can add them as a `StaticBody3D`, while for the physics objects, we can add them as a `RigidBody3D`.
+The character itself can be created using a `CharacterBody3D`. Then it's just a matter of connecting the input events to the character movement.
+It's already very well explained in the [official tutorials](https://docs.godotengine.org/en/stable/getting_started/first_3d_game/index.html), so I won't repeat them here.
+
+![A simple game world](./simple-game-world.png)
+
+# Simple Capturing (Copy and Paste)
+
+To start with, we can implement a very simple version of the algorithm, which is just copying and pasting at the right place.
+We can break down the algorithm like this:
+
+1. Find which items are in the camera viewport.
+2. Make a copy of those items, and keep their position relative to the player.
+3. When the photo is applied, place those copies in the world.
+
+## Finding Items in the Camera
+
+To find the items that are in the viewport, We can take advantage of Godot's collision system. 
+A camera's viewport is a pyramid, so we can just create an Area3D (collision detection area)
+in the shape of a pyramid and place it in the correct location relative to the player.
+We can make it very large so it can collide with everything that the player sees.
+
+When it's time to find the items, we can query this collision detector for any items that intersect with it.
+
+![Large pyramid as collider](./collider.png)
+
+## Copying and Pasting Somewhere Else
+
+
+![Simplified algorithm example](./capturing.svg)
+
+
