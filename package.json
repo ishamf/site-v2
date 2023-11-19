@@ -74,6 +74,12 @@
     "*.astro": [
       "prettier --write",
       "eslint"
+    ],
+    "*.mdx": [
+      "prettier --write"
+    ],
+    "*.md": [
+      "prettier --write"
     ]
   }
 }
