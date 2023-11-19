@@ -35,7 +35,7 @@ We can break down the algorithm like this:
 
 ## Finding Items in the Camera
 
-To find the items that are in the viewport, We can take advantage of Godot's collision system. 
+To find the items that are in the viewport, We can take advantage of Godot's collision system.
 A camera's viewport is a pyramid, so we can just create an Area3D (collision detection area)
 in the shape of a pyramid and place it in the correct location relative to the player.
 We can make it very large so it can collide with everything that the player sees.
@@ -46,7 +46,4 @@ When it's time to find the items, we can query this collision detector for any i
 
 ## Copying and Pasting Somewhere Else
 
-
 ![Simplified algorithm example](./capturing.svg)
-
-
