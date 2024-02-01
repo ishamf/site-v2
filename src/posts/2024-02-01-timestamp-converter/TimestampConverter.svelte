@@ -111,7 +111,7 @@
 
   <TextButton
     on:click={() => {
-      inputText = now.toISO();
+      inputText = DateTime.now().toISO();
     }}>Set to current time</TextButton
   >
 </div>
