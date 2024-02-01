@@ -93,13 +93,15 @@
   {result ? result : 'The results will appear here'}
 </p>
 
-<div class="flex flex-row flex-wrap">
+<div class="flex flex-row flex-wrap gap-4">
   <a
     href={result}
     rel="nofollow noreferrer external"
-    class="p-4 m-4 no-underline font-normal
+    class="px-4 py-2 no-underline font-normal
              bg-slate-100 hover:bg-slate-200 text-slate-800
              dark:bg-slate-700 dark:hover:bg-slate-600 dark:text-slate-300
+
+              focus:outline-none focus:ring-2 focus:ring-slate-500
          "
   >
     Open URL

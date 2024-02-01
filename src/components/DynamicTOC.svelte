@@ -63,7 +63,7 @@
         hover:text-slate-900 dark:hover:text-slate-200;
 
     display: list-item;
-    list-style-type: '- ';
+    list-style-type: disc;
 
     &.current-item {
       @apply font-bold text-slate-900 dark:text-slate-100;
