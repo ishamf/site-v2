@@ -3,6 +3,7 @@ import PostHeading from '../../components/PostHeading.svelte';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import DynamicTOC from '../../components/DynamicTOC.svelte';
 import { getPosts, type Post } from '@/posts';
+import BaseCard from '@/components/BaseCard.astro';
 
 export async function getStaticPaths() {
   const posts = await getPosts();
@@ -23,13 +24,13 @@ const { Content, headings, title, created, description, link } = post;
     <div class="side-item flex flex-row justify-end items-start">
       <DynamicTOC {headings} client:load />
     </div>
-    <div class="content overflow-hidden mt-4 bg-white dark:bg-slate-800 mx-auto py-12 max-w-3xl">
-      <div class="max-w-2xl mx-auto px-2">
+    <div class="content overflow-hidden">
+      <BaseCard>
         <PostHeading {title} {link} {created} />
         <div class="prose prose-slate dark:prose-invert font-sans mx-auto mt-4 max-w-none">
           <Content />
         </div>
-      </div>
+      </BaseCard>
     </div>
     <div class="side-item"></div>
   </div>
