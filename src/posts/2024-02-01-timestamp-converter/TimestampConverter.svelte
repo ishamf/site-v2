@@ -5,8 +5,10 @@
   import { circInOut } from 'svelte/easing';
   import TextButton from '@/components/TextButton.svelte';
   import { onMount } from 'svelte';
-  import { mdiClose } from '@mdi/js';
+  import { mdiClose, mdiContentCopy } from '@mdi/js';
   import Button from '@/components/Button.svelte';
+  import Icon from '@/components/Icon.svelte';
+  import CopyableIconButton from './CopyableIconButton.svelte';
 
   const animationConfig = { duration: 150, easing: circInOut };
 
@@ -89,8 +91,50 @@
 
   let displayResult = result;
 
+  type DisplayItem = {
+    label: string;
+    value: string | number | null;
+  };
+
+  let displayItems: DisplayItem[] = [];
+
   $: {
     displayResult = displayMode === 'utc' ? result?.setZone('utc') : result;
+
+    if (displayResult) {
+      displayItems = [
+        {
+          label: 'Timestamp (seconds)',
+          value: displayResult.toSeconds(),
+        },
+        {
+          label: 'Timestamp (milliseconds)',
+          value: displayResult.toMillis(),
+        },
+        {
+          label: 'ISO 8601',
+          value: displayResult.toISO(),
+        },
+        {
+          label: 'RFC 2822',
+          value: displayResult.toRFC2822(),
+        },
+        {
+          label: 'Local Format',
+          value: displayResult.toLocaleString(DateTime.DATETIME_FULL),
+        },
+        {
+          label: 'Relative Time',
+          value: displayResult.toRelative({
+            base: now,
+            // Only round if the difference is less than 1 minute
+            round: Math.abs(displayResult.valueOf() - now.valueOf()) < 60000,
+          }),
+        },
+      ];
+    } else {
+      displayItems = [];
+    }
   }
 </script>
 
@@ -139,36 +183,14 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>Timestamp (seconds)</td>
-          <td>{displayResult.toSeconds()}</td>
-        </tr>
-        <tr>
-          <td>Timestamp (milliseconds)</td>
-          <td>{displayResult.toMillis()}</td>
-        </tr>
-        <tr>
-          <td>ISO 8601</td>
-          <td>{displayResult.toISO()}</td>
-        </tr>
-        <tr>
-          <td>RFC 2822</td>
-          <td>{displayResult.toRFC2822()}</td>
-        </tr>
-        <tr>
-          <td>Local Format</td>
-          <td>{displayResult.toLocaleString(DateTime.DATETIME_FULL)}</td>
-        </tr>
-        <tr>
-          <td>Relative Time</td>
-          <td
-            >{displayResult.toRelative({
-              base: now,
-              // Only round if the difference is less than 1 minute
-              round: Math.abs(displayResult.valueOf() - now.valueOf()) < 60000,
-            })}</td
-          >
-        </tr>
+        {#each displayItems as item}
+          <tr>
+            <td>{item.label}</td>
+            <td>{item.value}</td>
+            <td><CopyableIconButton content={item.value?.toString() ?? ''}></CopyableIconButton></td
+            >
+          </tr>
+        {/each}
       </tbody>
     </table>
   </div>

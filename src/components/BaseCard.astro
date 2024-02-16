@@ -1,0 +1,30 @@
+---
+/**
+ * Base card component
+ */
+const { class: className, ...rest } = Astro.props;
+---
+
+<div class:list={['outer bg-white dark:bg-slate-800', className]} {...rest}>
+  <div class="inner">
+    <slot />
+  </div>
+</div>
+
+<style>
+  .outer {
+    --max-w: 44rem;
+
+    --min-padding: 0.5rem;
+    --max-padding: 3rem;
+
+    max-width: calc(var(--max-w) + (var(--max-padding)) * 2);
+  }
+
+  .inner {
+    max-width: calc(var(--max-w) + var(--min-padding) * 2);
+    margin: 0 auto;
+
+    padding: var(--max-padding) var(--min-padding);
+  }
+</style>
