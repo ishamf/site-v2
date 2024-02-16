@@ -2,12 +2,20 @@
 import type { Post } from '@/posts';
 import BaseCard from './BaseCard.astro';
 import PostHeading from './PostHeading.svelte';
-type Props = Post;
+type Props = Post & { class?: string };
 
-const { title, link, created, PreviewContent, description } = Astro.props;
+const {
+  title,
+  link,
+  created,
+  PreviewContent,
+  description,
+  class: className,
+  ...rest
+} = Astro.props;
 ---
 
-<BaseCard>
+<BaseCard class={className} {...rest}>
   <PostHeading {title} {link} {created} />
 
   <div class="prose prose-slate dark:prose-invert font-sans mt-4 max-w-none">

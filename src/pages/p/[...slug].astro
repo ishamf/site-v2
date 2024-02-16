@@ -24,14 +24,14 @@ const { Content, headings, title, created, description, link } = post;
     <div class="side-item flex flex-row justify-end items-start">
       <DynamicTOC {headings} client:load />
     </div>
-    <div class="content overflow-hidden">
-      <BaseCard>
-        <PostHeading {title} {link} {created} />
-        <div class="prose prose-slate dark:prose-invert font-sans mx-auto mt-4 max-w-none">
-          <Content />
-        </div>
-      </BaseCard>
-    </div>
+
+    <BaseCard class="content">
+      <PostHeading {title} {link} {created} />
+      <div class="prose prose-slate dark:prose-invert font-sans mx-auto mt-4 max-w-none">
+        <Content />
+      </div>
+    </BaseCard>
+
     <div class="side-item"></div>
   </div>
 </BaseLayout>
