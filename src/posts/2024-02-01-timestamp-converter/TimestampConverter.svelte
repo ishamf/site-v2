@@ -5,10 +5,10 @@
   import { circInOut } from 'svelte/easing';
   import TextButton from '@/components/TextButton.svelte';
   import { onMount } from 'svelte';
-  import { mdiClose, mdiContentCopy } from '@mdi/js';
+  import { mdiClose } from '@mdi/js';
   import Button from '@/components/Button.svelte';
-  import Icon from '@/components/Icon.svelte';
   import CopyableIconButton from './CopyableIconButton.svelte';
+  import { InputType, guessAndParseInput, inputTypeLabels } from './utils';
 
   const animationConfig = { duration: 150, easing: circInOut };
 
@@ -18,65 +18,29 @@
 
   let displayMode: 'local' | 'utc' = 'local';
 
+  let interval: ReturnType<typeof setInterval> | undefined;
+
+  function resetInterval() {
+    if (interval) {
+      clearInterval(interval);
+      interval = setInterval(() => {
+        now = DateTime.now();
+      }, 1000);
+    }
+    // Add 1 millisecond so the relative time is always in the past
+    now = DateTime.now().plus({ milliseconds: 1 });
+  }
+
   onMount(() => {
-    const interval = setInterval(() => {
+    interval = setInterval(() => {
       now = DateTime.now();
     }, 1000);
 
     return () => clearInterval(interval);
   });
 
-  enum InputType {
-    TimestampSeconds,
-    TimestampMilliseconds,
-    ISO,
-    RFC2822,
-    GuessedFromDate,
-  }
-
-  const inputTypeLabels = {
-    [InputType.TimestampSeconds]: 'timestamp (seconds)',
-    [InputType.TimestampMilliseconds]: 'timestamp (milliseconds)',
-    [InputType.ISO]: 'ISO 8601',
-    [InputType.RFC2822]: 'RFC 2822',
-    [InputType.GuessedFromDate]: 'parsable by native JS Date',
-  };
-
   let inputType: InputType | undefined;
   let result: DateTime | undefined;
-
-  function guessAndParseInput(input: string): null | [InputType, DateTime] {
-    if (!input) {
-      return null;
-    }
-
-    if (/^[0-9.]+$/.exec(input)) {
-      const amount = parseFloat(input);
-      const magnitude = Math.log10(amount);
-      if (magnitude < 10) {
-        return [InputType.TimestampSeconds, DateTime.fromMillis(amount * 1000)];
-      } else {
-        return [InputType.TimestampMilliseconds, DateTime.fromMillis(amount)];
-      }
-    } else {
-      let parsed = DateTime.fromISO(input);
-      if (parsed.isValid) {
-        return [InputType.ISO, parsed];
-      }
-
-      parsed = DateTime.fromRFC2822(input);
-      if (parsed.isValid) {
-        return [InputType.RFC2822, parsed];
-      }
-
-      const guessed = new Date(input);
-      if (!isNaN(guessed.getTime())) {
-        return [InputType.GuessedFromDate, DateTime.fromJSDate(guessed)];
-      }
-
-      return null;
-    }
-  }
 
   $: {
     const parsed = guessAndParseInput((inputText || '').trim());
@@ -105,7 +69,7 @@
       displayItems = [
         {
           label: 'Timestamp (seconds)',
-          value: displayResult.toSeconds(),
+          value: Math.floor(displayResult.toSeconds()),
         },
         {
           label: 'Timestamp (milliseconds)',
@@ -156,6 +120,7 @@
   <TextButton
     on:click={() => {
       inputText = DateTime.now().toISO();
+      resetInterval();
     }}>Set to current time</TextButton
   >
 </div>
